@@ -1,0 +1,27 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "lib": [
+      "es2017"
+    ],
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "build",
+  },
+  "include": [
+    "src/index.ts",
+    "jest.config.js"
+  ],
+  "typedocOptions": {
+    "entryPoints": [
+      "src/index.ts"
+    ],
+    "out": "docs",
+    "readme": "none"
+  }
+}
