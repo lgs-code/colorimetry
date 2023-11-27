@@ -15,7 +15,8 @@ jobs:
 
       - name: Get Version
         run: |
-          echo "$(cat package.json)" | jq .version | xargs -I {} "Version="{} >> $GITHUB_ENV
+          PACKAGE_VER= "$(cat package.json)" | jq .version
+          echo $PACKAGE_VER
 
       - name: Tag to ${{ env.Version }}
         run: |
