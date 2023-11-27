@@ -8,7 +8,7 @@ on:
     branches: ["develop", "feature/*", "!master"]
 
 jobs:
-  tag:
+  create-tag:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,6 +19,8 @@ jobs:
 
       - name: Tag to ${{ env.PACKAGE_VER }}
         run: |
+          git config user.name "$(git log -n 1 --pretty=format:%an)"
+          git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git tag -a v${{ env.PACKAGE_VER }} -m "Version ${{ env.PACKAGE_VER }}"
 
       - name: Exit if not on master branch
