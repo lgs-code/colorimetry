@@ -15,8 +15,9 @@ jobs:
 
       - name: Get Version
         run: |
-          PACKAGE_VER= "$(cat package.json | jq .version)"
-          echo "${PACKAGE_VER}.${{github.run_number}}"
+          echo "$Version.${{github.run_number}}"
+        env:
+          Version: $(cat package.json | jq .version)
 
       - name: Tag to ${{ env.Version }}
         run: |
