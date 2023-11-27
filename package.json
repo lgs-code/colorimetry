@@ -15,7 +15,14 @@
   },
   "keywords": [
     "color",
-    "conversion"
+    "conversion",
+    "rgb",
+    "hsl",
+    "hsb",
+    "hsv",
+    "cmyk",
+    "yuv",
+    "Cie XYZ"
   ],
   "author": "LGS",
   "license": "MIT",
