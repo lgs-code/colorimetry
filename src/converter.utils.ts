@@ -3,6 +3,6 @@
  */
 export namespace ConverterUtils {
   export function roundInt(value: number, fractionDigits: number = 2): number {
-    return parseInt((value * 255.0).toFixed(fractionDigits));
+    return Math.round(Number.parseFloat(value.toFixed(fractionDigits)));
   }
 }

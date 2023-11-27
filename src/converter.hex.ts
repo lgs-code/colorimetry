@@ -2,6 +2,7 @@ import { Rgb } from "./rgb";
 import { Hsb } from "./hsb";
 import { Hsl } from "./hsl";
 import { Cmyk } from "./cmyk";
+import { YuvProfile } from "./yuvProfile";
 import { Yuv } from "./yuv";
 import { CieXyz } from "./cieXyz";
 import { RgbConverter } from "./converter.rgb";
@@ -24,9 +25,9 @@ export namespace HexConverter {
     }
 
     return new Rgb(
-      parseInt(`${hex.substring(1, 2)}`, radix),
-      parseInt(`${hex.substring(3, 2)}`, radix),
-      parseInt(`${hex.substring(5, 2)}`, radix),
+      parseInt(`${hex[1]}${hex[2]}`, radix),
+      parseInt(`${hex[3]}${hex[4]}`, radix),
+      parseInt(`${hex[5]}${hex[6]}`, radix),
     );
   }
 
@@ -60,10 +61,14 @@ export namespace HexConverter {
   /**
    * Converts a Hex color to Yuv color.
    * @param hex The hex color.
+   * @param profile The Yuv color profile.
    * @returns the Yuv color.
    */
-  export function HexToYuv(hex: string): Yuv {
-    return RgbConverter.RgbToYuv(HexToRgb(hex));
+  export function HexToYuv(
+    hex: string,
+    profile: YuvProfile = YuvProfile.BT_470,
+  ): Yuv {
+    return RgbConverter.RgbToYuv(HexToRgb(hex), profile);
   }
 
   /**

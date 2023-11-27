@@ -1,19 +1,23 @@
+import { YuvProfile } from "./yuvProfile";
+
 /**
  * Defines a YUV (Brightness, Blue-Luminance, Red-Luminance) color.
+ * @see {@link https://en.wikipedia.org/wiki/Y%E2%80%B2UV}
  */
 export class Yuv {
-  private static YMin: number = 0;
-  private static YMax: number = 1;
-  private static UMin: number = -0.436;
-  private static UMax: number = 0.436;
-  private static VMin: number = -0.615;
-  private static VMax: number = 0.615;
+  private _p: YuvProfile = YuvProfile.BT_470;
+  private _y: number = 0;
+  private _u: number = -YuvProfile.BT_470.uMax;
+  private _v: number = -YuvProfile.BT_470.vMax;
 
-  private _y: number = Yuv.YMin;
-  private _u: number = Yuv.UMin;
-  private _v: number = Yuv.VMin;
+  constructor(
+    y: number,
+    u: number,
+    v: number,
+    p: YuvProfile = YuvProfile.BT_470,
+  ) {
+    this._p = p;
 
-  constructor(y: number, u: number, v: number) {
     this.y = y;
     this.u = u;
     this.v = v;
@@ -30,7 +34,7 @@ export class Yuv {
    * Sets the Brightness component.
    */
   set y(value: number) {
-    this._y = value > Yuv.YMax ? Yuv.YMax : value < Yuv.YMin ? Yuv.YMin : value;
+    this._y = value > 1 ? 1 : value < 0 ? 0 : value;
   }
 
   /**
@@ -44,7 +48,12 @@ export class Yuv {
    * Sets the Blue-Luminance component.
    */
   set u(value: number) {
-    this._u = value > Yuv.UMax ? Yuv.UMax : value < Yuv.UMin ? Yuv.UMin : value;
+    this._u =
+      value > this._p.uMax
+        ? this._p.uMax
+        : value < this._p.uMin
+          ? this._p.uMin
+          : value;
   }
 
   /**
@@ -58,7 +67,12 @@ export class Yuv {
    * Sets the Red-Luminance component.
    */
   set v(value: number) {
-    this._v = value > Yuv.VMax ? Yuv.VMax : value < Yuv.VMin ? Yuv.VMin : value;
+    this._v =
+      value > this._p.vMax
+        ? this._p.vMax
+        : value < this._p.vMin
+          ? this._p.vMin
+          : value;
   }
 
   equals(obj: Yuv): boolean {

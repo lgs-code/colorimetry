@@ -2,6 +2,7 @@ import { Rgb } from "./rgb";
 import { Hsb } from "./hsb";
 import { Hsl } from "./hsl";
 import { Cmyk } from "./cmyk";
+import { YuvProfile } from "./yuvProfile";
 import { Yuv } from "./yuv";
 import { CieXyz } from "./cieXyz";
 import { ConverterUtils } from "./converter.utils";
@@ -15,15 +16,32 @@ export namespace YuvConverter {
    * @param v The red-luminance component.
    * @returns The Rgb components.
    */
-  export function getRgbFromYuv(y: number, u: number, v: number): number[] {
-    const red = y + 1.13983739837398374 * v;
-    const green = y - 0.3946517043589703515 * u - 0.5805986066674976801 * v;
-    const blue = y + 2.032110091743119266 * u;
+  export function getRgbFromYuv(
+    y: number,
+    u: number,
+    v: number,
+    profile: YuvProfile = YuvProfile.BT_470,
+  ): number[] {
+    const matrix = profile.rgbMatrix;
+    const offset = profile.offset;
+
+    const r =
+      matrix[0][0] * (y + offset[0]) +
+      matrix[0][1] * (u + offset[1]) +
+      matrix[0][2] * (v + offset[2]);
+    const g =
+      matrix[1][0] * (y + offset[0]) +
+      matrix[1][1] * (u + offset[1]) +
+      matrix[1][2] * (v + offset[2]);
+    const b =
+      matrix[2][0] * (y + offset[0]) +
+      matrix[2][1] * (u + offset[1]) +
+      matrix[2][2] * (v + offset[2]);
 
     return [
-      ConverterUtils.roundInt(red * 255.0),
-      ConverterUtils.roundInt(green * 255.0),
-      ConverterUtils.roundInt(blue * 255.0),
+      ConverterUtils.roundInt(r * 255.0),
+      ConverterUtils.roundInt(g * 255.0),
+      ConverterUtils.roundInt(b * 255.0),
     ];
   }
 

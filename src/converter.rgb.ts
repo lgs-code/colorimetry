@@ -2,6 +2,7 @@ import { Rgb } from "./rgb";
 import { Hsb } from "./hsb";
 import { Hsl } from "./hsl";
 import { Cmyk } from "./cmyk";
+import { YuvProfile } from "./yuvProfile";
 import { Yuv } from "./yuv";
 import { CieXyz } from "./cieXyz";
 
@@ -40,7 +41,7 @@ export namespace RgbConverter {
 
     let h = 0.0;
     if (max == r && g >= b) {
-      h = (60 * (g - b)) / (max - min);
+      h = max - min !== 0 ? (60 * (g - b)) / (max - min) : 0;
     } else if (max == r && g < b) {
       h = (60 * (g - b)) / (max - min) + 360;
     } else if (max == g) {
@@ -90,10 +91,8 @@ export namespace RgbConverter {
       l = 0;
 
     // hue
-    if (max == min) {
-      h = 0; // undefined
-    } else if (max == r && g >= b) {
-      h = (60.0 * (g - b)) / (max - min);
+    if (max == r && g >= b) {
+      h = max - min !== 0 ? (h = (60.0 * (g - b)) / (max - min)) : 0;
     } else if (max == r && g < b) {
       h = (60.0 * (g - b)) / (max - min) + 360.0;
     } else if (max == g) {
@@ -170,21 +169,24 @@ export namespace RgbConverter {
    * @param red The red component.
    * @param green The green component.
    * @param blue The blue component.
+   * @param profile The Yuv color profile.
    * @returns The Yuv components.
    */
   export function getYuvFromRgb(
     red: number,
     green: number,
     blue: number,
+    profile: YuvProfile = YuvProfile.BT_470,
   ): number[] {
     // normalizes red, green, blue values
     const r = red / 255.0;
     const g = green / 255.0;
     const b = blue / 255.0;
+    const matrix = profile.yuvMatrix;
 
-    const y = 0.299 * r + 0.587 * g + 0.114 * b;
-    const u = -0.14713 * r - 0.28886 * g + 0.436 * b;
-    const v = 0.615 * r - 0.51499 * g - 0.10001 * b;
+    const y = matrix[0][0] * r + matrix[0][1] * g + matrix[0][2] * b;
+    const u = matrix[1][0] * r + matrix[1][1] * g + matrix[1][2] * b;
+    const v = matrix[2][0] * r + matrix[2][1] * g + matrix[2][2] * b;
 
     return [y, u, v];
   }
@@ -192,10 +194,14 @@ export namespace RgbConverter {
   /**
    * Converts a Rgb color to a Yuv color.
    * @param rgb The Rgb color.
+   * @param profile The Yuv color profile.
    * @returns The Yuv color.
    */
-  export function RgbToYuv(rgb: Rgb): Yuv {
-    const values: number[] = getYuvFromRgb(rgb.r, rgb.g, rgb.b);
+  export function RgbToYuv(
+    rgb: Rgb,
+    profile: YuvProfile = YuvProfile.BT_470,
+  ): Yuv {
+    const values: number[] = getYuvFromRgb(rgb.r, rgb.g, rgb.b, profile);
 
     return new Yuv(values[0], values[1], values[2]);
   }
@@ -220,15 +226,15 @@ export namespace RgbConverter {
     // convert to a sRGB form
     const r =
       rLinear > 0.04045
-        ? Math.pow((rLinear + 0.055) / (1 + 0.055), 2.2)
+        ? Math.pow((rLinear + 0.055) / (1 + 0.055), 2.4)
         : rLinear / 12.92;
     const g =
       gLinear > 0.04045
-        ? Math.pow((gLinear + 0.055) / (1 + 0.055), 2.2)
+        ? Math.pow((gLinear + 0.055) / (1 + 0.055), 2.4)
         : gLinear / 12.92;
     const b =
       bLinear > 0.04045
-        ? Math.pow((bLinear + 0.055) / (1 + 0.055), 2.2)
+        ? Math.pow((bLinear + 0.055) / (1 + 0.055), 2.4)
         : bLinear / 12.92;
 
     return [

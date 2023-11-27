@@ -17,9 +17,9 @@ export namespace CieXyzConverter {
    */
   export function getRgbFromCieXyz(x: number, y: number, z: number): number[] {
     const Clinear: number[] = new Array<number>(3);
-    Clinear[0] = x * 3.241 - y * 1.5374 - z * 0.4986; // red
-    Clinear[1] = -x * 0.9692 + y * 1.876 - z * 0.0416; // green
-    Clinear[2] = x * 0.0556 - y * 0.204 + z * 1.057; // blue
+    Clinear[0] = x * 3.2406 - y * 1.5372 - z * 0.4986; // red
+    Clinear[1] = -x * 0.9689 + y * 1.8758 - z * 0.0415; // green
+    Clinear[2] = x * 0.0557 - y * 0.204 + z * 1.057; // blue
 
     for (let i = 0; i < 3; i++) {
       Clinear[i] =

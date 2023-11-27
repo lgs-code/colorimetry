@@ -2,6 +2,7 @@ import { Rgb } from "./rgb";
 import { Hsb } from "./hsb";
 import { Hsl } from "./hsl";
 import { Cmyk } from "./cmyk";
+import { YuvProfile } from "./yuvProfile";
 import { Yuv } from "./yuv";
 import { CieXyz } from "./cieXyz";
 import { ConverterUtils } from "./converter.utils";
@@ -144,14 +145,19 @@ export namespace HsbConverter {
   /**
    * Converts a Hsb color to a Yuv color.
    * @param hsb The Hsb color.
+   * @param profile The Yuv color profile.
    * @returns The Yuv color.
    */
-  export function HsbToYuv(hsb: Hsb): Yuv {
+  export function HsbToYuv(
+    hsb: Hsb,
+    profile: YuvProfile = YuvProfile.BT_470,
+  ): Yuv {
     const rgbs: number[] = getRgbFromHsb(hsb.h, hsb.s, hsb.b);
     const yuvs: number[] = RgbConverter.getYuvFromRgb(
       rgbs[0],
       rgbs[1],
       rgbs[2],
+      profile,
     );
 
     return new Yuv(yuvs[0], yuvs[1], yuvs[2]);

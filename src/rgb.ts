@@ -1,5 +1,6 @@
 /**
  * Defines a RGB (Red Green, Blue) color.
+ * @see {@link https://en.wikipedia.org/wiki/SRGB}
  */
 export class Rgb {
   private static Min: number = 0;
