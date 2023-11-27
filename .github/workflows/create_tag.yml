@@ -4,14 +4,19 @@
 name: Tag Version
 
 on:
-  push:
-    branches: ["develop", "feature/*", "!master"]
+  pull_request:
+    branches: [master]
+    types: [closed]
 
 jobs:
   create-tag:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Exit if not on master branch
+        if: endsWith(github.ref, 'master') == false
+        run: exit -1
 
       - name: Get Version
         run: |
@@ -22,7 +27,4 @@ jobs:
           git config user.name "$(git log -n 1 --pretty=format:%an)"
           git config user.email "$(git log -n 1 --pretty=format:%ae)"
           git tag -a v${{ env.PACKAGE_VER }} -m "Version ${{ env.PACKAGE_VER }}"
-
-      - name: Exit if not on master branch
-        if: endsWith(github.ref, 'master') == false
-        run: exit -1
+          git push --follow-tags
