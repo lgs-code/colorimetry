@@ -15,11 +15,11 @@ jobs:
 
       - name: Get Version
         run: |
-          echo "PACKAGE_VER=$(cat package.json | jq -r .version)" >> $GITHUB_ENV
+          echo "PACKAGE_VER=$(cat package.json | jq -r .version).${{github.run_number}}" >> $GITHUB_ENV
 
       - name: Tag to ${{ env.PACKAGE_VER }}
         run: |
-          echo ${{ env.PACKAGE_VER }}
+          git tag -a v${{ env.PACKAGE_VER }} -m "Version ${{ env.PACKAGE_VER }}"
 
       - name: Exit if not on master branch
         if: endsWith(github.ref, 'master') == false
