@@ -1,0 +1,48 @@
+{
+    "root": true,
+    "env": {
+        "commonjs": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": [
+        "plugin:jsdoc/recommended-typescript-error",
+        "airbnb-base",
+        "prettier"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": [
+            "./tsconfig.json"
+        ]
+    },
+    "plugins": [
+        "jsdoc",
+        "prettier"
+    ],
+    "rules": {
+        "prettier/prettier": "error",
+        "jsdoc/require-description": 2,
+        "no-var": 0,
+        "no-console": [
+            "warn",
+            {
+                "allow": [
+                    "clear",
+                    "info",
+                    "error",
+                    "dir",
+                    "trace",
+                    "log"
+                ]
+            }
+        ]
+    },
+    "ignorePatterns": [
+        "src/**/*.test.ts"
+    ]
+}
