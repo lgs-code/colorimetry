@@ -15,7 +15,7 @@ jobs:
 
       - name: Get Version
         run: |
-          echo cat package.json | jq -r '.version'
+          echo "$(cat package.json)" | jq .version
 
       - name: Exit if not on master branch
         if: endsWith(github.ref, 'master') == false
