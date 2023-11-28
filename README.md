@@ -30,19 +30,19 @@ These are not classes, but namespaces regrouping conversion functions.
 
 Image you'd like to convert a RGB value to HSB, you can use the following code:
 
-    import { Rgb, RgbConverter } from "colorimetry";
+    import { Rgb, RgbConverter } from "@lgs-code/colorimetry";
 
     const rgb = new Rgb(252, 186, 3);
     const hsb = RgbConverter.RgbToHsb(rgb);
 
-    // will output "44.096385542168676°, 98.80952380952381%, 98.82352941176471%"
-    console.log(`${hsb.h.toFixed(2)}°, ${hsb.s*100}%, ${hsb.b*100}%`);
+    // will output "44.10°, 98.81%, 98.82%"
+    console.log(`${hsb.h.toFixed(2)}°, ${(hsb.s * 100).toFixed(2)}%, ${(hsb.b * 100).toFixed(2)}%`);
 
 The same principle apply to any conversion you'd like to perform.
 
 ## Documentation
 
-For the list of of available classes and features, please review the documentation [here](docs/index.html).
+For the list of of available classes and features, please review the documentation [here](https://lgs-code.github.io/colorimetry/).
 
 ## Tools
 

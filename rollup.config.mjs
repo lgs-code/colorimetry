@@ -12,7 +12,7 @@ export default [
   {
     input: "build/index.js",
     output: {
-      name: pkg.name,
+      name: pkg.name.replace("@lgs-code/", ""),
       file: pkg.browser,
       format: "umd",
       sourcemap: !production,

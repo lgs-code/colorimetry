@@ -1,6 +1,6 @@
 {
-  "name": "colorimetry",
-  "version": "0.0.1",
+  "name": "@lgs-code/colorimetry",
+  "version": "1.0.0",
   "description": "TypeScript library for color conversion",
   "main": "dist/colorimetry.js",
   "module": "dist/colorimetry.mjs",
