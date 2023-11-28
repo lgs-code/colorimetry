@@ -2,10 +2,7 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
 name: build-and-test
-env:
-  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-
-run-name: Build & Test ${{ env.BRANCH_NAME }}
+run-name: Build & Test ${{ github.head_ref || github.ref_name }}
 
 on:
   push:
