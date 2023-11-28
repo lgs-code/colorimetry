@@ -1,7 +1,8 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Tag Version
+name: create-version-tag
+run-name: Tag Master Branch
 
 on:
   pull_request:
@@ -18,11 +19,11 @@ jobs:
         if: endsWith(github.ref, 'master') == false
         run: exit -1
 
-      - name: Get Version
+      - name: Guess Version
         run: |
           echo "PACKAGE_VER=$(cat package.json | jq -r .version).${{github.run_number}}" >> $GITHUB_ENV
 
-      - name: Tag to ${{ env.PACKAGE_VER }}
+      - name: Place ${{ env.PACKAGE_VER }} version tag
         run: |
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
